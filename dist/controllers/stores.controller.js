@@ -28,4 +28,12 @@ exports.storesController = {
         const data = yield stores_handlers_1.storesHandler.editStore(Number(req.params.id), req.body); // eslint-disable-line
         data.error ? res.status(500).json(data) : res.status(200).json(data);
     }),
+    postStore: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const data = yield stores_handlers_1.storesHandler.createStore(req.body); // eslint-disable-line
+        data.error ? res.status(500).json(data) : res.status(201).json(data);
+    }),
+    deleteStore: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const data = yield stores_handlers_1.storesHandler.deleteStore(Number(req.params.id)); // eslint-disable-line
+        data.error ? res.status(500).json(data) : res.status(200).json(data);
+    }),
 };

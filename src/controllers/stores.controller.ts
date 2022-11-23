@@ -18,4 +18,12 @@ export const storesController = {
     const data: any = await storesHandler.editStore(Number(req.params.id), req.body) // eslint-disable-line
     data.error ? res.status(500).json(data) : res.status(200).json(data)
   },
+  postStore: async (req: Request, res: Response) => {
+    const data: any = await storesHandler.createStore(req.body) // eslint-disable-line
+    data.error ? res.status(500).json(data) : res.status(201).json(data)
+  },
+  deleteStore: async (req: Request, res: Response) => {
+    const data: any = await storesHandler.deleteStore(Number(req.params.id)) // eslint-disable-line
+    data.error ? res.status(500).json(data) : res.status(200).json(data)
+  },
 }

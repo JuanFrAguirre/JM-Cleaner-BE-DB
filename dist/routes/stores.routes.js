@@ -10,5 +10,7 @@ router
     .get('/', stores_controller_1.storesController.getAllStores)
     .get('/:id', stores_controller_1.storesController.getStoreById)
     .get('/type/:type', stores_controller_1.storesController.getStoreByType)
-    .put('/:id', stores_controller_1.storesController.putStoreDataById);
+    .put('/:id', stores_controller_1.storesController.putStoreDataById)
+    .post('/', stores_controller_1.storesController.postStore)
+    .delete('/:id', stores_controller_1.storesController.deleteStore);
 exports.default = router;

@@ -19,18 +19,18 @@ const processQueryResult = (data) => {
 };
 exports.storesHandler = {
     getAllStores: () => __awaiter(void 0, void 0, void 0, function* () {
-        const [result] = yield db_config_1.default.query('SELECT * FROM stores');
+        const [result] = yield db_config_1.default.query('SELECT * FROM stores;');
         return processQueryResult(result);
     }),
     getStoreById: (id) => __awaiter(void 0, void 0, void 0, function* () {
-        const [result] = yield db_config_1.default.query(`SELECT * FROM stores WHERE id = ${id}`);
+        const [result] = yield db_config_1.default.query(`SELECT * FROM stores WHERE id = ${id};`);
         const data = processQueryResult(result);
         return data.length === 0 ? { error: 'ID does not exist' } : data;
     }),
     getStoreByType: (type) => __awaiter(void 0, void 0, void 0, function* () {
         if (type !== 'farmacias' && type !== 'opticas')
             return { error: 'Incorrect type' };
-        const [result] = yield db_config_1.default.query(`SELECT * FROM stores WHERE type = "${type}"`);
+        const [result] = yield db_config_1.default.query(`SELECT * FROM stores WHERE type = "${type}";`);
         console.log('result', result);
         return processQueryResult(result);
     }),
@@ -41,17 +41,36 @@ exports.storesHandler = {
         if (storeExists.error)
             return { error: 'Wrong ID' };
         const [result] = yield db_config_1.default.query(`UPDATE stores SET
-    name = "${data.name}" ,
+    name = "${data.name}",
     address = "${data.address}",
     phone = ${data.phone ? `"${data.phone}"` : null},
-    coordenates = "${data.coordenates ? `"${data.coordenates}"` : null}",
+    coordenates = ${data.coordenates ? `"${data.coordenates}"` : null},
     loc = "${data.loc}",
     type = "${data.type}",
     state = "${data.state}",
-    brand = "${data.brand ? `"${data.brand}"` : null}",
+    brand = ${data.brand ? `"${data.brand}"` : null},
     createdAt = "${data.createdAt}",
-    editedAt = "${data.editedAt ? `"${data.editedAt}"` : null}"
-    WHERE id = ${id}`);
+    editedAt = ${data.editedAt ? `"${data.editedAt}"` : null}
+    WHERE id = ${id};`);
+        return processQueryResult(result);
+    }),
+    createStore: (data) => __awaiter(void 0, void 0, void 0, function* () {
+        if (!data.name || !data.address || !data.loc || !data.type || !data.state || !data.createdAt)
+            return { error: 'Incorrect data' };
+        const [result] = yield db_config_1.default.query(`INSERT INTO
+    stores (
+      name, address, phone, coordenates, loc, type, state, brand, createdAt
+    )
+    VALUES (
+      "${data.name}", "${data.address}", ${data.phone ? `"${data.phone}"` : null}, ${data.coordenates ? `"${data.coordenates}"` : null}, "${data.loc}", "${data.type}", "${data.state}", ${data.brand ? `"${data.brand}"` : null}, NOW()
+    );`);
+        return processQueryResult(result);
+    }),
+    deleteStore: (id) => __awaiter(void 0, void 0, void 0, function* () {
+        const storeExists = yield exports.storesHandler.getStoreById(id); // eslint-disable-line
+        if (storeExists.error)
+            return { error: 'Wrong ID' };
+        const [result] = yield db_config_1.default.query(`DELETE FROM stores WHERE id = ${id};`);
         return processQueryResult(result);
     }),
 };

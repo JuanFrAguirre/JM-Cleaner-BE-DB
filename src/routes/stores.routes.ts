@@ -7,5 +7,7 @@ router
   .get('/:id', storesController.getStoreById)
   .get('/type/:type', storesController.getStoreByType)
   .put('/:id', storesController.putStoreDataById)
+  .post('/', storesController.postStore)
+  .delete('/:id', storesController.deleteStore)
 
 export default router
