@@ -8,13 +8,13 @@ const app = (0, express_1.default)();
 const dotenv_1 = __importDefault(require("dotenv"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
+const api_routes_1 = __importDefault(require("./routes/api.routes"));
 dotenv_1.default.config();
 const PORT = process.env.PORT;
 app.use((0, morgan_1.default)('tiny'));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded());
 app.use((0, cors_1.default)());
-app.get('/', (req, res) => {
-    res.send('connected!');
-});
+app.get('/', (_req, res) => res.redirect('/api'));
+app.use('/api', api_routes_1.default);
 app.listen(PORT, () => console.log(`--\n--\n\nServer running at http://localhost:${PORT}\n\n--\n--`));
